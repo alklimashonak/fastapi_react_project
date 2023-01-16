@@ -1,9 +1,9 @@
-import {Container} from "react-bootstrap";
+import Body from "../components/Body";
 
 export default function HomePage() {
     return (
-        <Container>
+        <Body>
             <h1>Home Page</h1>
-        </Container>
+        </Body>
     )
 }
