@@ -28,3 +28,8 @@ code {
 .Card {
   padding-bottom: 5px;
 }
+
+.InputField {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}

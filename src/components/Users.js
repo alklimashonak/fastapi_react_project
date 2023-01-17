@@ -1,19 +1,23 @@
 import {Spinner, Stack} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import User from "./User";
+import {useApi} from "../contexts/ApiProvider";
 
 export default function Users() {
-    const [users, setUsers] = useState()
+    const [users, setUsers] = useState();
+    const api = useApi();
 
     useEffect(() => {
         (async () => {
-            const response = await fetch('http://127.0.0.1:8000/api/users/')
+            const response = await api.get('/users/');
             if (response.ok) {
-                const result = await response.json()
-                setUsers(result)
+                setUsers(response.body);
             }
-        })()
-    }, [])
+            else {
+                setUsers(null);
+            }
+        })();
+    }, [api]);
 
     return (
         <>

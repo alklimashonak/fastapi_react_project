@@ -1,18 +1,22 @@
 import {Spinner, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
+import {useApi} from "../contexts/ApiProvider";
 
 export default function DriversTable() {
     const [drivers, setDrivers] = useState()
+    const api = useApi()
 
     useEffect(() => {
         (async () => {
-            const response = await fetch('http://127.0.0.1:8000/api/drivers/')
+            const response = await api.get('/drivers/');
             if (response.ok) {
-                const result = await response.json()
-                setDrivers(result)
+                setDrivers(response.body);
             }
-        })()
-    }, [])
+            else {
+                setDrivers(null);
+            }
+        })();
+    }, [api]);
     return (
         <>
             {drivers === undefined ?
@@ -34,7 +38,7 @@ export default function DriversTable() {
                             <tbody>
                             {drivers.map(driver => {
                                 return (
-                                    <DriverRow driver={driver}/>
+                                    <DriverRow key={driver.id} driver={driver}/>
                                 )
                             })
                             }
