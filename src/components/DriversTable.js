@@ -8,7 +8,7 @@ export default function DriversTable() {
 
     useEffect(() => {
         (async () => {
-            const response = await api.get('/drivers/');
+            const response = await api.get('/drivers');
             if (response.ok) {
                 setDrivers(response.body);
             }

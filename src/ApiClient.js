@@ -17,6 +17,7 @@ export default class ApiClient {
                 method: options.method,
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
                     ...options.headers,
                 },
                 body: options.body ? JSON.stringify(options.body) : null,
@@ -55,5 +56,27 @@ export default class ApiClient {
 
     async delete(url, options) {
         return this.request({method: 'DELETE', url, ...options});
+    }
+    async login(username, password) {
+        const response = await this.post('/auth/login/', null, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: JSON.stringify(
+                `grant_type=&username=${username}&password=${password}&scope=&client_id=&client_secret=`
+            ),
+        });
+        if (!response.ok) {
+            return response.status === 400 ? 'fail' : 'error';
+        }
+        localStorage.setItem('accessToken', response.body.access_token);
+        return 'ok';
+    }
+    logout() {
+        localStorage.removeItem('accessToken');
+    }
+
+    isAuthenticated() {
+        return localStorage.getItem('accessToken') !== null;
     }
 }

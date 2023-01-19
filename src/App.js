@@ -8,6 +8,11 @@ import DriversPage from "./pages/DriversPage";
 import RegisterPage from "./pages/RegisterPage";
 import ApiProvider from "./contexts/ApiProvider";
 import FlashProvider from "./contexts/FlashProvider";
+import UserProvider from "./contexts/UserProvider";
+import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
+import ProfilePage from "./pages/ProfilePage";
+import TeamPage from "./pages/TeamPage";
 
 function App() {
     return (
@@ -15,14 +20,24 @@ function App() {
             <BrowserRouter>
                 <FlashProvider>
                     <ApiProvider>
-                        <Header/>
-                        <Routes>
-                            <Route path='/' element={<HomePage/>}></Route>
-                            <Route path='/login' element={<LoginPage/>}></Route>
-                            <Route path='/register' element={<RegisterPage/>}></Route>
-                            <Route path='/users' element={<UsersPage/>}></Route>
-                            <Route path='/drivers' element={<DriversPage/>}></Route>
-                        </Routes>
+                        <UserProvider>
+                            <Header/>
+                            <Routes>
+                                <Route path='/login' element={<PublicRoute><LoginPage /></PublicRoute>}></Route>
+                                <Route path='/register' element={<PublicRoute><RegisterPage /></PublicRoute>}></Route>
+                                <Route path='*' element={
+                                    <PrivateRoute>
+                                        <Routes>
+                                            <Route path='/' element={<HomePage />}></Route>
+                                            <Route path='/profile' element={<ProfilePage />}></Route>
+                                            <Route path='/users' element={<UsersPage />}></Route>
+                                            <Route path='/drivers' element={<DriversPage />}></Route>
+                                            <Route path='/teams/:teamId' element={<TeamPage />}></Route>
+                                        </Routes>
+                                    </PrivateRoute>
+                                } />
+                            </Routes>
+                        </UserProvider>
                     </ApiProvider>
                 </FlashProvider>
             </BrowserRouter>

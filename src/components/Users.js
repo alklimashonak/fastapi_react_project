@@ -1,6 +1,5 @@
-import {Spinner, Stack} from "react-bootstrap";
+import {ListGroup, ListGroupItem, Spinner} from "react-bootstrap";
 import {useEffect, useState} from "react";
-import User from "./User";
 import {useApi} from "../contexts/ApiProvider";
 
 export default function Users() {
@@ -9,11 +8,10 @@ export default function Users() {
 
     useEffect(() => {
         (async () => {
-            const response = await api.get('/users/');
+            const response = await api.get('/users');
             if (response.ok) {
                 setUsers(response.body);
-            }
-            else {
+            } else {
                 setUsers(null);
             }
         })();
@@ -28,13 +26,15 @@ export default function Users() {
                     {users === null ?
                         <p>There are no users</p>
                         :
-                        <Stack>
+                        <ListGroup>
                             {users.map(user => {
                                 return (
-                                    <User key={user.id} user={user} />
+                                    <ListGroupItem key={user.id} variant="primary">
+                                        {user.email}
+                                    </ListGroupItem>
                                 )
                             })}
-                        </Stack>
+                        </ListGroup>
                     }
                 </>
             }
