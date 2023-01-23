@@ -21,15 +21,26 @@ code {
 }
 
 .Body {
-  margin-left: 5%;
-  width: 50%;
+  margin: auto;
+  width: auto;
+  text-align: center;
 }
 
 .Card {
   margin-top: 20px;
 }
 
+.FormCard {
+  width: 600px;
+  padding: 20px;
+}
+
 .InputField {
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+.DriverButton {
+  width: 100px;
+  height: 40px;
 }

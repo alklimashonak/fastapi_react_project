@@ -58,7 +58,7 @@ export default class ApiClient {
         return this.request({method: 'DELETE', url, ...options});
     }
     async login(username, password) {
-        const response = await this.post('/auth/login/', null, {
+        const response = await this.post('/auth/login', null, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },

@@ -30,10 +30,7 @@ export default function Header() {
                             <>
                                 <Nav className='me-auto'>
                                     <Nav.Item>
-                                        <Nav.Link as={NavLink} to='/users'>Users</Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link>Teams</Nav.Link>
+                                        <Nav.Link as={NavLink} to='/myteam'>My Team</Nav.Link>
                                     </Nav.Item>
                                     <Nav.Item>
                                         <Nav.Link as={NavLink} to='/drivers'>Drivers</Nav.Link>
