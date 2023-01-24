@@ -1,38 +1,41 @@
-import {useEffect, useState} from "react";
-import {Container, Spinner} from "react-bootstrap";
-import DriversItem from "./DriversItem";
-import {useApi} from "../contexts/ApiProvider";
+import {Button, Container, ListGroup, ListGroupItem} from "react-bootstrap";
+import {useDrivers} from "../contexts/DriversProvider";
 
-export default function TeamCard({ teamId }) {
-    const api = useApi()
-    const [team, setTeam] = useState()
+export default function TeamCard({teamDrivers, setTeamDrivers, picks, setPicks}) {
+    const {driversAll, setDriversAll} = useDrivers()
 
-    useEffect(() => {
-        (async () => {
-            const response = await api.get(`/teams/${teamId}`)
-            if (response.ok) {
-                setTeam(response.body.team)
-            } else {
-                setTeam(null)
-            }
-        })()
-    }, [api, teamId])
+    const handleButtonRemove = ({driver}) => {
+        if (picks.includes(driver.id)) {
+            const arr = picks.filter(item => item !== driver.id)
+            const newTeamDrivers = teamDrivers.filter(item => item.id !== driver.id)
+            const newDriversAll = driversAll.concat([driver])
+            setPicks(arr)
+            setDriversAll(newDriversAll)
+            setTeamDrivers(newTeamDrivers)
+        } else {
+            const arr = picks.concat([driver.id])
+            setPicks(arr)
+        }
+    }
 
     return (
-        <Container>
-            {
-                team === undefined ?
-                    <Spinner animation='border'/>
-                    :
-                    <>
-                        {
-                            team === null ?
-                                <h1>There is no team</h1>
-                                :
-                                <DriversItem team={team} />
-                        }
-                    </>
-            }
-        </Container>
+            <Container className='align-self-start'>
+                <ListGroup horizontal='xl' className='align-self-start'>
+                    {
+                        teamDrivers.map(driver => {
+                            return (
+                                <ListGroupItem key={driver.id} variant='primary'>
+                                    <Button
+                                        onClick={
+                                            () => handleButtonRemove({driver: driver})
+                                        }>
+                                        {picks.includes(driver.id) ? driver.last_name : null}
+                                    </Button>
+                                </ListGroupItem>
+                            )
+                        })
+                    }
+                </ListGroup>
+            </Container>
     )
 }

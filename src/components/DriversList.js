@@ -4,16 +4,14 @@ import {useApi} from "../contexts/ApiProvider";
 import {useDrivers} from "../contexts/DriversProvider";
 
 export default function DriversList({picks, setPicks, teamDrivers, setTeamDrivers}) {
-    const {drivers, setDrivers} = useDrivers()
+    const {driversAll, setDriversAll} = useDrivers()
     const api = useApi()
 
     const handleButtonAdd = (driver) => {
         if (picks.length < 5) {
             const newPicks = picks.concat([driver.id])
-            const newDrivers = drivers.filter(item => item !== driver)
             const newTeamDrivers = teamDrivers.concat([driver])
             setPicks(newPicks)
-            setDrivers(newDrivers)
             setTeamDrivers(newTeamDrivers)
         }
     }
@@ -23,37 +21,37 @@ export default function DriversList({picks, setPicks, teamDrivers, setTeamDriver
             const response = await api.get('/drivers');
             if (response.ok) {
                 const driversList = response.body.filter(driver => !picks.includes(driver.id))
-                setDrivers(driversList);
+                setDriversAll(driversList);
             } else {
-                setDrivers(null);
+                setDriversAll(null);
             }
         })();
-    }, [api, setDrivers, picks]);
+    }, [api, setDriversAll, picks]);
 
     return (
         <>
-            {drivers === undefined ?
+            {driversAll === undefined ?
                 <Spinner animation="border"/>
                 :
                 <>
-                    {drivers === null ?
+                    {driversAll === null ?
                         <p>There are no drivers</p>
                         :
                         <Container className='w-25 align-content-end'>
                             <ListGroup>
                                 {
-                                    drivers.map(driver => {
+                                    driversAll.map(driver => {
                                         return (
                                             <ListGroup.Item key={driver.id}>
                                                 <Button onClick={() => handleButtonAdd(driver)} className='DriverButton'>
-                                                    {drivers.includes(driver) ? driver.last_name : null}
+                                                    {driver.last_name}
                                                 </Button>
                                             </ListGroup.Item>
                                         )
                                     })
                                 }
                             </ListGroup>
-                            <Button onClick={() => console.log(drivers)}>Show drivers</Button>
+                            <Button onClick={() => console.log(driversAll)}>Show drivers</Button>
                         </Container>
                     }
                 </>
