@@ -48,10 +48,7 @@ export default function TeamCard({teamDrivers, setTeamDrivers, disabled, setDisa
                         teamDrivers.map(driver => {
                             return (
                                 <ListGroupItem key={driver.id} variant='primary'>
-                                    <Button
-                                        onClick={
-                                            () => handleButtonRemove({driver: driver})
-                                        }>
+                                    <Button onClick={() => handleButtonRemove({driver: driver})}>
                                         {driver.last_name}
                                     </Button>
                                 </ListGroupItem>
@@ -59,7 +56,7 @@ export default function TeamCard({teamDrivers, setTeamDrivers, disabled, setDisa
                         })
                     }
                 </ListGroup>
-                <Button type='submit' onClick={() => handleSaveButton()}>
+                <Button type='submit' onClick={handleSaveButton}>
                     Save
                 </Button>
             </Container>

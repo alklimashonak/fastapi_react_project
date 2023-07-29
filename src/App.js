@@ -13,7 +13,6 @@ import PublicRoute from "./components/PublicRoute";
 import ProfilePage from "./pages/ProfilePage";
 import TeamPage from "./pages/TeamPage";
 import MyTeamPage from "./pages/MyTeamPage";
-import DriversProvider from "./contexts/DriversProvider";
 
 function App() {
     return (
@@ -22,25 +21,23 @@ function App() {
                 <FlashProvider>
                     <ApiProvider>
                         <UserProvider>
-                            <DriversProvider>
-                                <Header/>
-                                <Routes>
-                                    <Route path='/login' element={<PublicRoute><LoginPage/></PublicRoute>}></Route>
-                                    <Route path='/register'
-                                           element={<PublicRoute><RegisterPage/></PublicRoute>}></Route>
-                                    <Route path='*' element={
-                                        <PrivateRoute>
-                                            <Routes>
-                                                <Route path='/' element={<HomePage/>}></Route>
-                                                <Route path='/profile' element={<ProfilePage/>}></Route>
-                                                <Route path='/myteam' element={<MyTeamPage/>}></Route>
-                                                <Route path='/drivers' element={<DriversPage/>}></Route>
-                                                <Route path='/teams/:teamId' element={<TeamPage/>}></Route>
-                                            </Routes>
-                                        </PrivateRoute>
-                                    }/>
-                                </Routes>
-                            </DriversProvider>
+                            <Header/>
+                            <Routes>
+                                <Route path='/login' element={<PublicRoute><LoginPage/></PublicRoute>}></Route>
+                                <Route path='/register'
+                                       element={<PublicRoute><RegisterPage/></PublicRoute>}></Route>
+                                <Route path='*' element={
+                                    <PrivateRoute>
+                                        <Routes>
+                                            <Route path='/' element={<HomePage/>}></Route>
+                                            <Route path='/profile' element={<ProfilePage/>}></Route>
+                                            <Route path='/myteam' element={<MyTeamPage/>}></Route>
+                                            <Route path='/drivers' element={<DriversPage/>}></Route>
+                                            <Route path='/teams/:teamId' element={<TeamPage/>}></Route>
+                                        </Routes>
+                                    </PrivateRoute>
+                                }/>
+                            </Routes>
                         </UserProvider>
                     </ApiProvider>
                 </FlashProvider>

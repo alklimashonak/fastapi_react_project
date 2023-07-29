@@ -7,14 +7,8 @@ import {useState} from "react";
 
 export default function MyTeamPage() {
     const {user} = useUser();
-    const [picks, setPicks] = useState(getDriversIds(user.team.drivers));
     const [teamDrivers, setTeamDrivers] = useState(user.team.drivers);
-
-    function getDriversIds(drivers) {
-        const driversIds = []
-        drivers.map(driver => driversIds.push(driver.id))
-        return driversIds
-    }
+    const [disabled, setDisabled] = useState([])
 
     return (
         <Body>
@@ -22,14 +16,15 @@ export default function MyTeamPage() {
                 <TeamCard
                     teamDrivers={teamDrivers}
                     setTeamDrivers={setTeamDrivers}
-                    picks={picks}
-                    setPicks={setPicks}
+                    disabled={disabled}
+                    setDisabled={setDisabled}
+                    team={user.team}
                 />
                 <DriversList
                     teamDrivers={teamDrivers}
                     setTeamDrivers={setTeamDrivers}
-                    picks={picks}
-                    setPicks={setPicks}
+                    disabled={disabled}
+                    setDisabled={setDisabled}
                 />
             </Stack>
         </Body>

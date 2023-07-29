@@ -1,49 +1,56 @@
 import {Button, Container, ListGroup, Spinner} from "react-bootstrap";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useApi} from "../contexts/ApiProvider";
-import {useDrivers} from "../contexts/DriversProvider";
 
-export default function DriversList({picks, setPicks, teamDrivers, setTeamDrivers}) {
-    const {driversAll, setDriversAll} = useDrivers()
+export default function DriversList({teamDrivers, setTeamDrivers, disabled, setDisabled}) {
     const api = useApi()
-
-    const handleButtonAdd = (driver) => {
-        if (picks.length < 5) {
-            const newPicks = picks.concat([driver.id])
-            const newTeamDrivers = teamDrivers.concat([driver])
-            setPicks(newPicks)
-            setTeamDrivers(newTeamDrivers)
-        }
-    }
+    const [drivers, setDrivers] = useState()
 
     useEffect(() => {
         (async () => {
             const response = await api.get('/drivers');
             if (response.ok) {
-                const driversList = response.body.filter(driver => !picks.includes(driver.id))
-                setDriversAll(driversList);
+                setDrivers(response.body);
+                setDisabled(getDriversIds(teamDrivers))
             } else {
-                setDriversAll(null);
+                setDrivers(null);
             }
         })();
-    }, [api, setDriversAll, picks]);
+    }, [api, teamDrivers, setDisabled]);
+
+    const getDriversIds = (drivers) => {
+        const driversIds = []
+        drivers.map(driver => driversIds.push(driver.id))
+        return driversIds
+    }
+
+    const handleButtonAdd = (driver) => {
+        if (teamDrivers.length < 5) {
+            setTeamDrivers(teamDrivers.concat([driver]))
+            setDisabled(disabled.concat([driver.id]))
+        }
+    }
 
     return (
         <>
-            {driversAll === undefined ?
+            {drivers === undefined ?
                 <Spinner animation="border"/>
                 :
                 <>
-                    {driversAll === null ?
+                    {drivers === null ?
                         <p>There are no drivers</p>
                         :
                         <Container className='w-25 align-content-end'>
                             <ListGroup>
                                 {
-                                    driversAll.map(driver => {
+                                    drivers.map(driver => {
                                         return (
                                             <ListGroup.Item key={driver.id}>
-                                                <Button onClick={() => handleButtonAdd(driver)} className='DriverButton'>
+                                                <Button
+                                                    onClick={() => handleButtonAdd(driver)}
+                                                    className='DriverButton'
+                                                    disabled={disabled.includes(driver.id)}
+                                                >
                                                     {driver.last_name}
                                                 </Button>
                                             </ListGroup.Item>
@@ -51,7 +58,6 @@ export default function DriversList({picks, setPicks, teamDrivers, setTeamDriver
                                     })
                                 }
                             </ListGroup>
-                            <Button onClick={() => console.log(driversAll)}>Show drivers</Button>
                         </Container>
                     }
                 </>
