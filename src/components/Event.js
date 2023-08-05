@@ -1,44 +1,46 @@
-import { Stack, Table } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import MatchesTable from "./MatchesTable";
+import { Spinner } from "react-bootstrap";
+import { useApi } from '../contexts/ApiProvider';
+import AddMatchForm from "./AddMatchForm";
 
-export default function Event({ event }) {
+export default function Event({ event_id }) {
+    const api = useApi();
+    const [event, setEvent] = useState();
+    const [predictions, setPredictions] = useState();
+
+    useEffect(() => {
+        (async () => {
+            const response1 = await api.get('/events/' + event_id);
+            const response2 = await api.get('/predictions/' + event_id);
+            setEvent(response1.ok ? response1.body : null);
+            setPredictions(response2.ok ? response2.body : null)
+        })();
+    }, [api, event_id]);
+
     return (
-        <Stack>
-            <h1>{event.name}</h1>
-            <p>deadline: {event.deadline}</p>
-            {event.matches ?
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Match</th>
-                            <th>Result</th>
-                            <th>Prediction</th>
-                            <th>Points</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {event.matches.map(match => {
-                            return (
-                                <tr key={match.id}>
-                                    <td>{match.home_team} - {match.away_team}</td>
-                                    <td>{match.home_goals}-{match.away_goals}</td>
-                                    {match.prediction === null ?
-                                        <>
-                                            <td>-</td>
-                                            <td>-</td>
-                                        </> :
-                                        <>
-                                            <td>{match.prediction.home_goals}-{match.prediction.away_goals}</td>
-                                            <td>{match.prediction.points}</td>
-                                        </>
-                                    }
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </Table>
+        <>
+            {event === undefined ?
+                <Spinner animation="border" />
                 :
-                <p>There are no matches</p>
+                <>
+                    {
+                        event === null ?
+                            <p>No event</p>
+                            :
+                            <>
+                                <h1>{event.name}</h1>
+                                <p>deadline: {event.deadline}</p>
+                                {event.matches.length > 0 ?
+                                    <MatchesTable matches={event.matches} predictions={predictions} />
+                                    :
+                                    <p>There are no matches</p>
+                                }
+                                <AddMatchForm event_id={event.id} />
+                            </>
+                    }
+                </>
             }
-        </Stack>
+        </>
     )
 }
