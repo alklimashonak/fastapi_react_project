@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import MatchesTable from "./MatchesTable";
 import { Spinner } from "react-bootstrap";
 import { useApi } from '../contexts/ApiProvider';
-import AddMatchForm from "./AddMatchForm";
 
 export default function Event({ event_id }) {
     const api = useApi();
@@ -36,7 +35,6 @@ export default function Event({ event_id }) {
                                     :
                                     <p>There are no matches</p>
                                 }
-                                <AddMatchForm event_id={event.id} />
                             </>
                     }
                 </>

@@ -38,6 +38,12 @@ export default function Header() {
                                         <NavDropdown.Item as={NavLink} to='/profile'>
                                             Profile
                                         </NavDropdown.Item>
+                                        {user.is_superuser ?
+                                            <NavDropdown.Item as={NavLink} to='/admin'>
+                                                Admin panel
+                                            </NavDropdown.Item> :
+                                            <></>
+                                        }
                                         <NavDropdown.Divider/>
                                         <NavDropdown.Item onClick={logout}>
                                             Logout

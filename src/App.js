@@ -11,6 +11,9 @@ import FlashProvider from "./contexts/FlashProvider";
 import RegisterPage from "./pages/RegisterPage";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
+import AdminPage from "./pages/admin/AdminPage";
+import AdminEventPage from "./pages/admin/AdminEventPage";
+import AdminRoute from "./components/admin/AdminRoute";
 
 function App() {
     return (
@@ -26,6 +29,8 @@ function App() {
                                 <Route path='*' element={
                                     <PrivateRoute>
                                         <Routes>
+                                            <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>}></Route>
+                                            <Route path='/admin/events/:event_id' element={<AdminRoute><AdminEventPage /></AdminRoute>}></Route>
                                             <Route path='/' element={<HomePage />}></Route>
                                             <Route path='/events' element={<EventsPage />}></Route>
                                             <Route path='/events/:event_id' element={<EventPage />}></Route>

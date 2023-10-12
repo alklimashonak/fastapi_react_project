@@ -31,7 +31,7 @@ export default function EventsList() {
                                     <Stack key={event.id}>
                                         <Stack direction='horizontal' gap={5}>
                                             <p>{event.name}</p>
-                                            <p>{event.deadline}</p>
+                                            <p>{`${new Date(event.deadline).getDate()}/${new Date(event.deadline).getMonth()}/${new Date(event.deadline).getFullYear()} - ${new Date(event.deadline).getHours()}:${new Date(event.deadline).getMinutes()}`}</p>
                                             <Link to={`/events/${event.id}`}>more</Link>
                                         </Stack>
                                     </Stack>
